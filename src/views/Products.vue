@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import querySTIFirestopApiForProducts from "../services/stiFirestopApi.js";
 import ProductCard from "../components/ProductCard";
 import DUMMY_DATA from "../assets/dummyData.json";
 
@@ -30,24 +30,12 @@ export default {
   },
   mounted() {
     console.log(this.productList);
-    const url = this.generateSTIFirestopApiCall();
-    console.log("url", url);
-    axios.get(url).then((response) => {
-      console.log(response);
-      this.productList = response;
+    querySTIFirestopApiForProducts(1, 10).then((res) => {
+      console.log("mounted product response", res);
     });
   },
   methods: {
-    generateSTIFirestopApiCall: function() {
-      let url = `https://api.stifirestop.com/products?load%5b%5d=images`;
-      if (this.page >= 0) {
-        url += `&page=${this.page}`;
-      }
-      if (this.limit) {
-        url += `&limit=${this.limit}`;
-      }
-      return url;
-    },
+    generateSTIFirestopApiCall: function() {},
   },
 };
 </script>
