@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <script>
+      const corsAnywhereUrl = "https://cors-anywhere.herokuapp.com/";
+      const url = "https://api.stifirestop.com/products";
+      const queries = "?page=2&limit=10&load%5b%5d=images";
+      axios({
+        method: "get",
+        url: corsAnywhereUrl + url + queries,
+        headers: { Origin: corsAnywhereUrl },
+      }).then((res) => {
+        console.log(res);
+      });
+    </script>
+  </body>
+</html>

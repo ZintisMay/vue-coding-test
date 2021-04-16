@@ -1,0 +1,17 @@
+<template>
+  <div class="productCard">
+    PRODUCT CARD
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ProductCard",
+  props: {
+    productId: String,
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped></style>
