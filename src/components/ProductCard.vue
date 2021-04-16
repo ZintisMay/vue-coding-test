@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card tag="article" class="productCard m-1 mb-4">
+    <b-card tag="article" class="productCard m-1 mt-4">
       <b-card-title class="cardTitle">
         {{ data.name }}
       </b-card-title>

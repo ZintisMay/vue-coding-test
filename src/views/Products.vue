@@ -1,8 +1,33 @@
 <template>
   <div class="products">
+    <div class="productSettings">
+      <select v-model="page">
+        <option
+          v-for="(option, index) in pages"
+          v-bind:value="option"
+          v-bind:key="index"
+        >
+          {{ option }}
+        </option>
+      </select>
+
+      <select v-model="limit">
+        <option
+          v-for="(option, index) in limitOptions"
+          v-bind:value="option"
+          v-bind:key="index"
+        >
+          {{ option }}
+        </option>
+      </select>
+
+      <input v-model="searchTerm" />
+
+      <button v-on:click="handleClick">Search</button>
+    </div>
     <div class="spaceAround">
       <ProductCard
-        v-for="(item, index) in productList.data"
+        v-for="(item, index) in productData.data"
         :key="index"
         :name="item.name"
         :data="item"
@@ -12,9 +37,9 @@
 </template>
 
 <script>
-import querySTIFirestopApiForProducts from "../services/stiFirestopApi.js";
+import { querySTIFirestopApiForProducts } from "../services/stiFirestopApi.js";
 import ProductCard from "../components/ProductCard";
-import DUMMY_DATA from "../assets/dummyData.json";
+// import DUMMY_DATA from "../assets/dummyData.json";
 
 export default {
   name: "Products",
@@ -23,19 +48,29 @@ export default {
   },
   data: () => {
     return {
-      productList: DUMMY_DATA,
-      page: 0,
+      searchTerm: "",
+      productData: {},
+      page: 1,
+      pages: [1, 2, 3, 4, 5, 6, 7],
       limit: 10,
+      limitOptions: [10, 25, 50],
     };
   },
-  mounted() {
-    console.log(this.productList);
-    querySTIFirestopApiForProducts(1, 10).then((res) => {
-      console.log("mounted product response", res);
-    });
-  },
   methods: {
-    generateSTIFirestopApiCall: function() {},
+    handleClick: function() {
+      console.log(this.page, this.limit, this.searchTerm);
+    },
+
+    submit() {
+      alert("Submit Form");
+    },
+  },
+  mounted() {
+    console.log("page, limit", this.page, this.limit);
+    querySTIFirestopApiForProducts(this.page, this.limit).then((res) => {
+      console.log("mounted product response", res.data);
+      this.productData = res.data;
+    });
   },
 };
 </script>
