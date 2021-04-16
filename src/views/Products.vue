@@ -1,16 +1,13 @@
 <template>
   <div class="products">
-    Products
-    {{ page }}
-    {{ limit }}
-    <b-row>
+    <div class="spaceAround">
       <ProductCard
         v-for="(item, index) in productList.data"
         :key="index"
         :name="item.name"
         :data="item"
       />
-    </b-row>
+    </div>
   </div>
 </template>
 
@@ -54,3 +51,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.spaceAround {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+</style>

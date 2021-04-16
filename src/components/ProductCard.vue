@@ -1,14 +1,12 @@
 <template>
   <div>
-    <b-card
-      title="Card Title"
-      tag="article"
-      style="max-width: 20rem;"
-      class="mb-2"
-    >
+    <b-card tag="article" class="productCard m-1 mb-4">
+      <b-card-title class="cardTitle">
+        {{ data.name }}
+      </b-card-title>
       <img class="cardImage" v-bind:src="data.images[0].urls.sm" />
       <b-card-text>
-        {{ data.name }}
+        {{ data.short_description.slice(0, 60).concat("...") }}
       </b-card-text>
       <b-link v-bind:to="'/products/' + data.id">
         <b-button variant="primary">See Product</b-button>
@@ -30,7 +28,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.productCard {
+  max-width: 300px;
+}
+.cardTitle {
+  height: 100px;
+}
 .cardImage {
-  width: 100%;
+  max-width: 100%;
+}
+.card-body {
+  height: 400px;
 }
 </style>
