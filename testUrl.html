@@ -16,10 +16,21 @@
       const corsAnywhereUrl = "https://cors-anywhere.herokuapp.com/";
       const url = "https://api.stifirestop.com/products";
       const queries = "?page=2&limit=10&load%5b%5d=images";
+
+      const basicRequest = url + queries;
+      const corsAnywhereRequest = corsAnywhereUrl + url + queries;
       axios({
         method: "get",
-        url: corsAnywhereUrl + url + queries,
-        headers: { Origin: corsAnywhereUrl },
+        url: basicRequest,
+        headers: { Origin: "*" },
+      }).then((res) => {
+        console.log(res);
+      });
+
+      axios({
+        method: "get",
+        url: corsAnywhereRequest,
+        headers: { Origin: "*" },
       }).then((res) => {
         console.log(res);
       });
