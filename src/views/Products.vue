@@ -52,25 +52,33 @@ export default {
       productData: {},
       page: 1,
       pages: [1, 2, 3, 4, 5, 6, 7],
-      limit: 10,
-      limitOptions: [10, 25, 50],
+      limit: 5,
+      limitOptions: [5, 10, 25, 50],
     };
   },
   methods: {
     handleClick: function() {
       console.log(this.page, this.limit, this.searchTerm);
+      this.getSetProductData();
     },
 
     submit() {
       alert("Submit Form");
     },
+    getSetProductData: function() {
+      console.log("page, limit", this.page, this.limit);
+      const queryOptions = {
+        page: this.page,
+        limit: this.limit,
+        searchTerm: this.searchTerm,
+      };
+      querySTIFirestopApiForProducts(queryOptions).then((res) => {
+        this.productData = res.data;
+      });
+    },
   },
   mounted() {
-    console.log("page, limit", this.page, this.limit);
-    querySTIFirestopApiForProducts(this.page, this.limit).then((res) => {
-      console.log("mounted product response", res.data);
-      this.productData = res.data;
-    });
+    this.getSetProductData();
   },
 };
 </script>

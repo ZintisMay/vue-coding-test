@@ -1,7 +1,7 @@
 import axios from "axios";
 
-async function querySTIFirestopApiForProducts(page, limit) {
-  console.log("querySTIFirestopApiForProducts", page, limit);
+async function querySTIFirestopApiForProducts({ page, limit, searchTerm }) {
+  console.log("querySTIFirestopApiForProducts", page, limit, searchTerm);
   const url = querySTIFirestopApiForProductsUrl();
   return axios.get(url);
 
@@ -12,6 +12,9 @@ async function querySTIFirestopApiForProducts(page, limit) {
     }
     if (limit >= 0) {
       url += `&limit=${limit}`;
+    }
+    if (searchTerm.length >= 0) {
+      url += `&search=${searchTerm}`;
     }
     return url;
   }
