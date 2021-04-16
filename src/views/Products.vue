@@ -3,22 +3,27 @@
     Products
     {{ page }}
     {{ limit }}
-    <ul id="example-1">
-      <li v-for="(item, index) in productList" :key="index">
-        {{ index }}
-        {{ JSON.stringify(item) }}
-      </li>
-    </ul>
+    <b-row>
+      <ProductCard
+        v-for="(item, index) in productList.data"
+        :key="index"
+        :name="item.name"
+        :data="item"
+      />
+    </b-row>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ProductCard from "../components/ProductCard";
 import DUMMY_DATA from "../assets/dummyData.json";
 
 export default {
   name: "Products",
-  components: {},
+  components: {
+    ProductCard,
+  },
   data: () => {
     return {
       productList: DUMMY_DATA,
