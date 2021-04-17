@@ -52,7 +52,7 @@ export default {
   margin-bottom: 20px;
 }
 .productCard {
-  max-width: 300px;
+  width: 300px;
 }
 .cardTitle {
   height: 6rem;

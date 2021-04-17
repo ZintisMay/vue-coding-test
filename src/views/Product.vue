@@ -13,7 +13,11 @@
           backgroundImage: 'url(' + productImage + ')',
         }"
       ></div>
-      <a class="productButton" v-bind:href="productLink" target="_blank"
+      <a
+        v-if="productLink"
+        class="productButton"
+        v-bind:href="productLink"
+        target="_blank"
         ><b-button class="productPageButton">See on STI</b-button></a
       >
       <p>{{ product.description }}</p>
@@ -39,7 +43,7 @@ export default {
   data: () => {
     return {
       product: {},
-      productImage: null,
+      productImage: "/images/loadingCircle.gif", //default loading image
       productLink: null,
       error: false,
     };
@@ -49,8 +53,10 @@ export default {
       .then((res) => {
         const data = res?.data?.data;
         this.product = data;
-        this.productImage = data?.images?.[0]?.urls?.lg;
-        this.productLink = STI_ROOT_URL + data?.slug;
+        //if no image for some reason display "image not found"
+        this.productImage =
+          data?.images?.[0]?.urls?.lg || "/images/noImageFound.png";
+        this.productLink = data?.slug ? STI_ROOT_URL + data?.slug : null;
       })
       .catch((err) => {
         if (err) {

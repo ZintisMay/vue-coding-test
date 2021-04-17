@@ -21,14 +21,15 @@
       <button v-on:click="handleSearch">Search</button>
     </div>
 
-    <div class="spaceAround" v-if="productData">
-      <ProductCard
-        v-for="(item, index) in productData.data"
-        :key="index"
-        :name="item.name"
-        :productId="item.id"
-        :data="item"
-      />
+    <div class="productContainer" v-if="productData">
+      <div class="productSpacingDiv" v-for="(item, index) in productData.data" 
+        :key="index">
+        <ProductCard
+          :name="item.name"
+          :productId="item.id"
+          :data="item"
+        />
+      </div>
     </div>
     <ErrorMessage title="Error Loading Data" text="Check your internet connection and try again." v-else-if="error" />
     <ErrorMessage title="No More Items" text="Try going back a page!" v-else-if="productData && productData.length == 0" />
@@ -88,7 +89,6 @@ export default {
         searchTerm: this.searchTerm,
       };
       getSTIFirestopProducts(queryOptions).then((res) => {
-
         this.productData = res.data;
       }).catch(err =>{
         if(err){
@@ -111,10 +111,16 @@ input {
 .pageInput{
   width:20px;
 }
-.spaceAround {
+.productContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
+}
+.productSpacingDiv{
+  width:33.3333333%;
+  text-align: center;
+  display:flex;
+  justify-content:center;
 }
 </style>
 
