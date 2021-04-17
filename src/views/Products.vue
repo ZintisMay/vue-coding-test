@@ -1,6 +1,7 @@
 <template>
   <div class="products">
     <div class="productSettings">
+      <label for="">Page:</label>
       <select v-model="page">
         <option
           v-for="(option, index) in pages"
@@ -11,6 +12,7 @@
         </option>
       </select>
 
+      <label for="">Items per page:</label>
       <select v-model="limit">
         <option
           v-for="(option, index) in limitOptions"
@@ -21,35 +23,40 @@
         </option>
       </select>
 
-      <input v-model="searchTerm" />
+      <input v-model="searchTerm" placeholder="view all items..." />
 
-      <button v-on:click="handleClick">Search</button>
+      <button v-on:click="handleSearch">Search</button>
     </div>
-    <div class="spaceAround">
+
+    <div class="spaceAround" v-if="productData">
       <ProductCard
         v-for="(item, index) in productData.data"
         :key="index"
         :name="item.name"
+        :productId="item.id"
         :data="item"
       />
     </div>
+    <LoadingCircle v-else />
   </div>
 </template>
 
 <script>
-import { querySTIFirestopApiForProducts } from "../services/stiFirestopApi.js";
+import { getSTIFirestopProducts } from "../services/stiFirestopApi.js";
 import ProductCard from "../components/ProductCard";
+import LoadingCircle from "../components/LoadingCircle";
 // import DUMMY_DATA from "../assets/dummyData.json";
 
 export default {
   name: "Products",
   components: {
     ProductCard,
+    LoadingCircle,
   },
   data: () => {
     return {
       searchTerm: "",
-      productData: {},
+      productData: null,
       page: 1,
       pages: [1, 2, 3, 4, 5, 6, 7],
       limit: 5,
@@ -57,33 +64,35 @@ export default {
     };
   },
   methods: {
-    handleClick: function() {
+    handleSearch: function() {
+      this.productData = null;
       console.log(this.page, this.limit, this.searchTerm);
-      this.getSetProductData();
+      this.getProductDataFromApi();
     },
 
-    submit() {
-      alert("Submit Form");
-    },
-    getSetProductData: function() {
+    getProductDataFromApi: function() {
       console.log("page, limit", this.page, this.limit);
       const queryOptions = {
         page: this.page,
         limit: this.limit,
         searchTerm: this.searchTerm,
       };
-      querySTIFirestopApiForProducts(queryOptions).then((res) => {
+      getSTIFirestopProducts(queryOptions).then((res) => {
         this.productData = res.data;
       });
     },
   },
   mounted() {
-    this.getSetProductData();
+    this.getProductDataFromApi();
   },
 };
 </script>
 
 <style scoped>
+label,
+input {
+  margin: 10px;
+}
 .spaceAround {
   display: flex;
   flex-wrap: wrap;

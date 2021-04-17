@@ -19,18 +19,12 @@
 export default {
   name: "ProductCard",
   props: {
-    productId: Number,
+    productId: String,
     name: String,
     data: Object,
   },
   mounted() {
     this.getProductDataFromApi();
-    console.log("data", this.data);
-  },
-  methods: {
-    getProductDataFromApi: function() {
-      console.log("getProductDataFromApi");
-    },
   },
 };
 </script>

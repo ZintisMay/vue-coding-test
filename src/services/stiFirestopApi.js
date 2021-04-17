@@ -1,11 +1,18 @@
 import axios from "axios";
 
-async function querySTIFirestopApiForProducts({ page, limit, searchTerm }) {
-  console.log("querySTIFirestopApiForProducts", page, limit, searchTerm);
-  const url = querySTIFirestopApiForProductsUrl();
+async function getSingleProductById(id) {
+  console.log("getSingleProductById", id);
+
+  const url = `https://api.stifirestop.com/products/${id}?load%5b%5d=images`;
+  return axios.get(url);
+}
+
+async function getSTIFirestopProducts({ page, limit, searchTerm }) {
+  console.log("getSTIFirestopProducts", page, limit, searchTerm);
+  const url = getSTIFirestopProductsUrl();
   return axios.get(url);
 
-  function querySTIFirestopApiForProductsUrl() {
+  function getSTIFirestopProductsUrl() {
     let url = `https://api.stifirestop.com/products?load%5b%5d=images`;
     if (page >= 0) {
       url += `&page=${page}`;
@@ -20,4 +27,4 @@ async function querySTIFirestopApiForProducts({ page, limit, searchTerm }) {
   }
 }
 
-export { querySTIFirestopApiForProducts };
+export { getSTIFirestopProducts, getSingleProductById };
