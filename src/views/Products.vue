@@ -2,18 +2,11 @@
   <div class="products">
     <div class="productSettings">
       <label for="">Page:</label>
-      <select v-model="page">
-        <option
-          v-for="(option, index) in pages"
-          v-bind:value="option"
-          v-bind:key="index"
-        >
-          {{ option }}
-        </option>
-      </select>
-
+      <b-button v-on:click="handlePagination(-1)">&#8592; </b-button>
+      <input class="pageInput" disabled v-bind:value="page" />
+      <b-button v-on:click="handlePagination(1)">&#8594; </b-button>
       <label for="">Items per page:</label>
-      <select v-model="limit">
+      <select v-model="limit" @change="handleLimitChange">
         <option
           v-for="(option, index) in limitOptions"
           v-bind:value="option"
@@ -37,6 +30,8 @@
         :data="item"
       />
     </div>
+    <ErrorMessage title="Error Loading Data" text="Check your internet connection and try again." v-else-if="error" />
+    <ErrorMessage title="No More Items" text="Try going back a page!" v-else-if="productData && productData.length == 0" />
     <LoadingCircle v-else />
   </div>
 </template>
@@ -45,13 +40,14 @@
 import { getSTIFirestopProducts } from "../services/stiFirestopApi.js";
 import ProductCard from "../components/ProductCard";
 import LoadingCircle from "../components/LoadingCircle";
-// import DUMMY_DATA from "../assets/dummyData.json";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
   name: "Products",
   components: {
     ProductCard,
     LoadingCircle,
+    ErrorMessage,
   },
   data: () => {
     return {
@@ -61,25 +57,44 @@ export default {
       pages: [1, 2, 3, 4, 5, 6, 7],
       limit: 5,
       limitOptions: [5, 10, 25, 50],
+      error: false,
     };
   },
   methods: {
     handleSearch: function() {
-      this.productData = null;
       console.log(this.page, this.limit, this.searchTerm);
       this.getProductDataFromApi();
     },
+    handlePagination: function(n) {
+      this.page += n;
+      if (this.page < 0) {
+        this.page = 0;
+      } else if (this.productData?.length == 0) {
+        this.page--;
+      }else{
+        this.getProductDataFromApi()
+      }
+    },
+    handleLimitChange: function(){
+      this.getProductDataFromApi()
+    },
 
     getProductDataFromApi: function() {
-      console.log("page, limit", this.page, this.limit);
+        this.productData = null;
+          this.error = false
       const queryOptions = {
         page: this.page,
         limit: this.limit,
         searchTerm: this.searchTerm,
       };
       getSTIFirestopProducts(queryOptions).then((res) => {
+
         this.productData = res.data;
-      });
+      }).catch(err =>{
+        if(err){
+          this.error = true
+        }
+      })
     },
   },
   mounted() {
@@ -93,9 +108,22 @@ label,
 input {
   margin: 10px;
 }
+.pageInput{
+  width:20px;
+}
 .spaceAround {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 </style>
+
+      // <select v-model="page">
+      //   <option
+      //     v-for="(option, index) in pages"
+      //     v-bind:value="option"
+      //     v-bind:key="index"
+      //   >
+      //     {{ option }}
+      //   </option>
+      // </select>

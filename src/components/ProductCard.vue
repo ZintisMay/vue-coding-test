@@ -4,7 +4,13 @@
       <b-card-title class="cardTitle">
         {{ data.name }}
       </b-card-title>
-      <img class="cardImage" v-bind:src="data.images[0].urls.sm" />
+      <div
+        class="centeredBGImage"
+        v-bind:style="{
+          backgroundImage: 'url(' + data.images[0].urls.sm + ')',
+        }"
+      ></div>
+
       <b-card-text>
         {{ data.short_description.slice(0, 60).concat("...") }}
       </b-card-text>
@@ -37,16 +43,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.centeredBGImage {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
 .productCard {
   max-width: 300px;
 }
 .cardTitle {
-  height: 100px;
+  height: 6rem;
 }
 .cardImage {
   max-width: 100%;
 }
 .card-body {
-  height: 400px;
+  height: 460px;
 }
 </style>
